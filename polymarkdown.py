@@ -58,9 +58,8 @@ elif p is not None and p is list:
 for proc in processor:
 
     # print [proc['path']]+proc['arguments'].split()
-    #
     # print input
 
     p = Popen([proc['path']]+proc['arguments'].split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    outs = p.communicate(input=input)[0]  # Push input to stdin
+    outs = p.communicate(input=input)[0]  # Push input to stdin, the [0] throws out the stderr
     print outs

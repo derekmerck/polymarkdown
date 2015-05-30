@@ -35,7 +35,7 @@ processor:
   path: "/usr/bin/pandoc"
   arguments: "-f markdown+pipe_tables+table_captions+yaml_metadata_block+example_lists+implicit_figures -t html5 --filter pandoc-citeproc --bibliography full_path/ref.bib"
 ---
-Here is a citation[@polymd2015]
+Here is a citation [@polymd2015]
 ```
 
 In Marked 2, set your custom processor to `polymarkdown.py` or `python -m polymarkdown` depending on how the script is installed.
@@ -59,7 +59,7 @@ Here is a citation [@polymd2015]
 
 ### Future Work
 
-- Add [Multimarkdown] support. 
+- Add [Multimarkdown] support; should be straightfoward. 
 - Add [Madoku] support.  This is non-trivial b/c of all the required output and input files.
 
 
