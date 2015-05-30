@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /Users/derek/anaconda/bin/python
 """"
 Polymarkdown
 A script to invoke alternate markdown processors based on document header metadata.
@@ -14,7 +14,10 @@ See README.md for usage, notes, and license info.
 
 """
 
-__package__ = "GID_Mint"
+import sys
+from subprocess import Popen, PIPE
+import yaml
+
 __description__ = "A script to invoke alternate markdown processors based on document header metadata."
 __url__ = "https://github.com/derekmerck/polymarkdown"
 __author__ = 'Derek Merck'
@@ -22,10 +25,6 @@ __email__ = "derek_merck@brown.edu"
 __license__ = "MIT"
 __version_info__ = ('0', '2', '0')
 __version__ = '.'.join(__version_info__)
-
-import sys
-from subprocess import Popen, PIPE
-import yaml
 
 processor = []  # Path arguments pairs
 
@@ -35,10 +34,15 @@ input = sys.stdin.read()
 # for line in sys.stdin:
 #     input = input + line + '\n'
 
-header = input.split('---')[0]
+# Requires an initial demarcation
+header = input.split('---')[1]
 meta = yaml.load(header)
 # for k,v in meta.items():
 #     print k, "->", v, "  \n"
+
+# Abort if the 'Custom Processor' tag isn't set
+if not meta.get('Custom Processor', False):
+    exit(0)
 
 p = meta.get('processor', None)
 if p is not None and p is not list:
@@ -52,6 +56,11 @@ elif p is not None and p is list:
         processor.append({'path': path, 'arguments': arguments})
 
 for proc in processor:
-    p = Popen([proc.path]+proc.arguments.split(), stdin=PIPE)
-    p.communicate(input=input)[0]  # Push input to stdin
 
+    # print [proc['path']]+proc['arguments'].split()
+    #
+    # print input
+
+    p = Popen([proc['path']]+proc['arguments'].split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    outs = p.communicate(input=input)[0]  # Push input to stdin
+    print outs
