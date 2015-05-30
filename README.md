@@ -1,3 +1,4 @@
+---
 Custom Processor: true
 processor:
   path: "/usr/bin/pandoc"
